@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1><%= title %></h1>
+  <p>Welcome to <%= title %></p>
+  <div class="d-inline-flex flex-column">
+    <% for(let data of schedule.reverse()){  %>
+    <div>Date : <%=data.date%></div>
+    <% for(let game of data.games){  %>
+    <!-- <pre><%=JSON.stringify(game, null, 2)%></pre> -->
+    <div class="sm-scoreboard mb-1">
+      <div class="sm-scoreboard-rows">
+        <% for(let side of ['away', 'home']){  %>
+          <div class="sm-scoreboard-row">
+            <div class="sm-scoreboard-team">
+              <img src="https://www.mlbstatic.com/team-logos/team-cap-on-light/<%=game.teams[side].team.id%>.svg" width="18px" height="18px" data-testid="teamLogos" class="boxscore-team-logo">
+              <span class="sm-scoreboard-team-name"><%=game.teams[side].team.teamName%></span>
+              <span class="sm-scoreboard-team-abbr d-none"><%=game.teams[side].team.abbreviation%></span>
+            </div>
+            <div class="sm-scoreboard-standing">
+              <% if(game.status.statusCode !== 'S') { %>
+              <span class="sm-scoreboard-team-score"><%=game.teams[side].score%></span>
+              <% } else { %>
+              <span class="sm-scoreboard-team-record"><%=game.teams[side].leagueRecord.wins%> - <%=game.teams[side].leagueRecord.losses%></span>
+              <%} %>
+            </div>
+          </div>
+        <%} %>
+      </div>
+      <div class="sm-scoreboard-status">
+        <span><%= game.status.detailedState %> </span>
+      </div>
+    </div>
+    <%} %>
+    <%} %>
+  </div>
+</body>
+
+</html>
